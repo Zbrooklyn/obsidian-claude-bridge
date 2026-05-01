@@ -1,4 +1,4 @@
-# Obsidian MCP Web Agent
+# Obsidian MCP Web Agent — Community Plugin
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/github/manifest-json/v/Zbrooklyn/obsidian-mcp-web-agent?label=version)](https://github.com/Zbrooklyn/obsidian-mcp-web-agent/releases)
