@@ -1,10 +1,52 @@
 # Claude Browser Bridge
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/github/manifest-json/v/Zbrooklyn/obsidian-claude-bridge?label=version)](https://github.com/Zbrooklyn/obsidian-claude-bridge/releases)
+[![Stars](https://img.shields.io/github/stars/Zbrooklyn/obsidian-claude-bridge?style=social)](https://github.com/Zbrooklyn/obsidian-claude-bridge/stargazers)
+[![Issues](https://img.shields.io/github/issues/Zbrooklyn/obsidian-claude-bridge)](https://github.com/Zbrooklyn/obsidian-claude-bridge/issues)
+[![Obsidian](https://img.shields.io/badge/obsidian-1.5.0%2B-purple)](https://obsidian.md)
+
 > An Obsidian plugin that lets AI agents (Claude, Playwright, Chrome DevTools MCP, anything that speaks the Chrome DevTools Protocol) drive Obsidian's built-in Web viewer.
 
-You log in to a website once in Obsidian's Web viewer (Gmail, GitHub, Upwork — whatever) and an external AI tool can then drive that tab using your already-authenticated session. No headless browser, no separate authentication, no token storage. The login is yours; the bridge is just an attach point.
+You log in to a website once in Obsidian's Web viewer (Gmail, GitHub, Upwork — whatever) and an external AI tool can then drive that tab using your already-authenticated session. **No headless browser, no separate authentication, no token storage. The login is yours; the bridge is just an attach point.**
 
 Pairs with the [`obsidian-bridge-mcp`](https://github.com/Zbrooklyn/obsidian-bridge-mcp) MCP server, which exposes the bridge to Claude Code (and any other MCP client) as 25 tools — navigate, click, type, screenshot, snapshot, scroll, etc.
+
+> _Screenshot here — capture your 🟢 status bar + Claude driving a Web viewer pane. Replace this line with `![demo](docs/demo.png)` once captured._
+
+---
+
+## Table of contents
+
+- [What you can do with it](#what-you-can-do-with-it)
+- [How it works](#how-it-works)
+- [Install (full setup)](#install-full-setup)
+- [Settings](#settings)
+- [Status bar indicator](#status-bar-indicator)
+- [Commands](#commands)
+- [Comparison](#comparison-vs-other-browser-mcps)
+- [FAQ](#faq)
+- [Roadmap](#roadmap)
+- [Platforms](#platforms)
+- [Privacy & data](#privacy--data)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Acknowledgments](#acknowledgments)
+- [License](#license)
+
+---
+
+## What you can do with it
+
+Real things people use this for:
+
+- **Manage Gmail without Claude seeing your password.** Sign into Gmail in Obsidian's Web viewer once. Ask Claude to triage, draft replies, search, archive — Claude drives the inbox using your existing session.
+- **AI-assisted research that lands in your vault.** "Read this article and write me a summary as a note" — Claude opens the article in Obsidian, reads the DOM, writes a summary directly into a vault file. Same window the whole time.
+- **Drive logged-in dashboards.** Stripe, Vercel, GitHub, Upwork, Shopify Admin — anywhere you're authenticated. Claude scrapes data, fills forms, runs reports without you switching context.
+- **Inspect web pages while taking notes.** Screenshot, read HTML, extract structured data — all into your vault, all without leaving Obsidian.
+- **Test your own web apps with AI.** Localhost dashboards, internal tools, prototypes — Claude can drive them via the bridge.
+
+The shape: anywhere you'd say "I wish AI could do this in my browser without me copying things back and forth," this fits.
 
 ---
 
@@ -155,6 +197,102 @@ Old issue with v0.2 of the plugin (pre-filtered .lnk scan was slow). Fixed in v0
 **External tool can't see the webview**
 Open a Web viewer pane in Obsidian first (Cmd palette → "Web viewer: Open"). The plugin doesn't auto-open one; the bridge only enumerates webviews that exist.
 
+## Comparison vs other browser MCPs
+
+Quick guide for when to use this vs alternatives:
+
+| Tool | What it drives | When to use it |
+|---|---|---|
+| **claude-browser-bridge** + obsidian-bridge-mcp (this) | Obsidian's Web viewer (uses your real Obsidian session) | When you want to use logged-in sessions, when you want to watch the work happen inside Obsidian, when you want results to land in your vault |
+| [`chrome-devtools-mcp`](https://github.com/ChromeDevTools/chrome-devtools-mcp) | A separate Chromium spawned by the MCP | When you want a fresh anonymous browser, when you don't want cookies / state to persist, when you need parallel contexts |
+| [`@playwright/mcp`](https://github.com/microsoft/playwright-mcp) | Playwright-managed browsers (Chromium, Firefox, WebKit) | When you want headless mode, cross-browser testing, or Playwright's full automation API surface |
+| [`browsermcp`](https://browsermcp.io/) | Your actual desktop Chrome via extension | When you want to drive the browser you actually use, but Claude has limited control over Chrome's UI compared to its own Chromium |
+
+These tools don't compete — they complement. Many users run several at once. The routing rule we use: **bridge for logged-in personal sessions, the others for fresh anonymous work.**
+
+## FAQ
+
+**Does this work with Claude Desktop?**
+Yes — see the install steps for editing `claude_desktop_config.json`. Same MCP server, different client.
+
+**Does this work without Claude — just Playwright or another tool?**
+Yes. The bridge is the Chrome DevTools Protocol exposed at `localhost:9222`. Anything that speaks CDP — raw `chrome-remote-interface`, Playwright's `connectOverCDP()`, Puppeteer, custom Node scripts — can attach. The MCP server is just one consumer.
+
+**Is my data safe?**
+The plugin runs entirely on your machine. The debug port only listens on `127.0.0.1` (localhost). Cookies stay in Obsidian's local Electron session — same place they'd be in any browser. Nothing leaves your computer through this plugin.
+
+**Why not just use Playwright MCP / Chrome DevTools MCP?**
+Those spawn their own browser, which means: separate logins, separate cookies, doesn't reuse your Obsidian session. This plugin's whole point is to use sessions you already have authenticated in Obsidian. If you don't need that, the others are great.
+
+**Will this slow down Obsidian?**
+The plugin itself is ~600 lines of JS, polls every 5 seconds, negligible overhead. The Web viewer is heavy when loaded with sites like Gmail — but that's the site, not the plugin.
+
+**What if I have multiple Obsidian vaults?**
+The plugin patches shortcuts at the OS level, so any vault you launch via a patched shortcut gets the bridge. The MCP server connects to whichever Obsidian instance is running. Don't run two instances simultaneously on the same debug port.
+
+**Can I change the port from 9222?**
+Yes — Settings → Claude Browser Bridge → Debug port. Change there, restart Obsidian via the plugin's restart command. Update the MCP server's `OBSIDIAN_BRIDGE_PORT` env var to match.
+
+**What about Obsidian Sync / Obsidian Publish?**
+Unrelated. This plugin doesn't touch your vault data, only the Web viewer's runtime.
+
+**The plugin doesn't appear in the official Obsidian community store. Is it official?**
+Not yet — this is a beta release distributed via BRAT. If it gets enough usage and stability, official store submission comes next.
+
+## Roadmap
+
+What's planned and what isn't:
+
+**Planned:**
+- Cross-platform shortcut patching (macOS .desktop equivalents, Linux .desktop files)
+- One-line installer that handles both plugin and MCP server in one command
+- Optional persistent CDP connection (avoids per-tool reconnect overhead)
+- Submission to official Obsidian community store
+- Demo videos
+
+**Maybe (open to discussion via Issues):**
+- Multi-tab UI hints in Obsidian (visual badge on which Web viewer tab Claude is currently driving)
+- Webhook / event subscription so external tools can listen for tab navigations
+- Per-tab cookie isolation
+
+**Not in scope:**
+- Replacing your actual browser — this is a complement, not a replacement
+- Mobile support — Obsidian Mobile isn't Electron, no debug port
+- Headless mode — Obsidian is always headed by design
+
+## Contributing
+
+Issues, suggestions, and PRs welcome at https://github.com/Zbrooklyn/obsidian-claude-bridge/issues.
+
+For PRs, please:
+1. Open an issue first to discuss the change
+2. Match the existing code style (vanilla JS, no build step, idiomatic Obsidian Plugin API)
+3. Test on your own vault before submitting
+4. Update README/INSTALL if your change affects user-facing behavior
+
+For bug reports, please include:
+- Obsidian version (Settings → About)
+- Plugin version (`manifest.json` or BRAT settings)
+- OS + version
+- What you ran, what you expected, what happened
+- Status bar state (🟢 / 🟡 / 🔴 / ⚪)
+- Any output from the developer console (Ctrl+Shift+I in Obsidian)
+
+## Acknowledgments
+
+Built on:
+- [Obsidian](https://obsidian.md) and its plugin API
+- The [Model Context Protocol](https://modelcontextprotocol.io/) and the [@modelcontextprotocol/sdk](https://github.com/modelcontextprotocol/typescript-sdk)
+- [BRAT](https://github.com/TfTHacker/obsidian42-brat) for beta plugin distribution
+- The Chrome DevTools Protocol — without which none of this would work
+
+Inspired by the broader ecosystem of "AI inside Obsidian" plugins:
+- [Claudian](https://github.com/YishenTu/claudian) — Claude Code as sidebar chat in Obsidian
+- [obsidian-mind](https://github.com/breferrari/obsidian-mind) — vault as persistent memory for AI agents
+- [obsidian-agent-client](https://github.com/RAIT-09/obsidian-agent-client) — agent client protocol bridge
+
+Each does a different piece. This plugin's contribution is the browser bridge specifically.
+
 ## License
 
-MIT — see LICENSE.
+MIT — see [LICENSE](LICENSE).
