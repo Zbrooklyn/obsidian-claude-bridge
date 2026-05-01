@@ -7,7 +7,7 @@ The MCP server half of the [Obsidian MCP Web Agent](../README.md) project. Conne
 You need the [Obsidian plugin](../README.md) installed and enabled first. Then:
 
 ```bash
-npm install -g github:Zbrooklyn/obsidian-mcp-web-agent
+npm install -g github:Zbrooklyn/obsidian-mcp-web-agent-community-plugin
 ```
 
 > _Note: this server lives inside the parent repo's `/server/` subfolder. The `npm install -g github:...` command pulls the whole repo and installs from there. The plugin part isn't installed via npm — that goes through BRAT inside Obsidian._

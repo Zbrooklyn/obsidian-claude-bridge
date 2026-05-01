@@ -24,7 +24,7 @@ You need these before starting. If you're missing any, install them first:
 In Obsidian:
 
 1. **Settings** → **Community plugins** → **Browse** → search "BRAT" → **Install** + **Enable**
-2. **Settings** → **BRAT** → **"Add Beta plugin"** → paste `Zbrooklyn/obsidian-mcp-web-agent` → **Add Plugin**
+2. **Settings** → **BRAT** → **"Add Beta plugin"** → paste `Zbrooklyn/obsidian-mcp-web-agent-community-plugin` → **Add Plugin**
 3. **Settings** → **Community plugins** → toggle **"Obsidian MCP Web Agent"** ON
 4. A notice appears: _"patched N Obsidian shortcut(s). Active on next launch."_
 5. **Quit and reopen Obsidian** normally (any shortcut)
@@ -35,7 +35,7 @@ In Obsidian:
 In a terminal (PowerShell on Windows, Terminal on Mac/Linux):
 
 ```bash
-npm install -g github:Zbrooklyn/obsidian-mcp-web-agent
+npm install -g github:Zbrooklyn/obsidian-mcp-web-agent-community-plugin
 ```
 
 ### Part 3: Wire into your Claude client
@@ -136,7 +136,7 @@ You should now see "BRAT" in your left sidebar of Settings.
 2. Click the button **"Add Beta plugin"**.
 3. A box appears asking for the GitHub repository. Paste:
    ```
-   Zbrooklyn/obsidian-mcp-web-agent
+   Zbrooklyn/obsidian-mcp-web-agent-community-plugin
    ```
 4. Click **Add Plugin**. Wait a few seconds — BRAT downloads the plugin from GitHub.
 5. Go back to **Settings** → **Community plugins**.
@@ -162,7 +162,7 @@ Open your terminal again (PowerShell on Windows, Terminal on Mac).
 Type this exactly:
 
 ```
-npm install -g github:Zbrooklyn/obsidian-mcp-web-agent
+npm install -g github:Zbrooklyn/obsidian-mcp-web-agent-community-plugin
 ```
 
 Press Enter. You'll see download progress. After ~30 seconds, you should see something like:

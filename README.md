@@ -1,8 +1,8 @@
 # Obsidian MCP Web Agent — Community Plugin
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/github/manifest-json/v/Zbrooklyn/obsidian-mcp-web-agent?label=version)](https://github.com/Zbrooklyn/obsidian-mcp-web-agent/releases)
-[![Stars](https://img.shields.io/github/stars/Zbrooklyn/obsidian-mcp-web-agent?style=social)](https://github.com/Zbrooklyn/obsidian-mcp-web-agent/stargazers)
+[![Version](https://img.shields.io/github/manifest-json/v/Zbrooklyn/obsidian-mcp-web-agent-community-plugin?label=version)](https://github.com/Zbrooklyn/obsidian-mcp-web-agent-community-plugin/releases)
+[![Stars](https://img.shields.io/github/stars/Zbrooklyn/obsidian-mcp-web-agent-community-plugin?style=social)](https://github.com/Zbrooklyn/obsidian-mcp-web-agent-community-plugin/stargazers)
 
 An Obsidian plugin (plus a small AI connector that runs alongside it) that lets Claude or any AI tool control a browser tab inside Obsidian, using websites you're already logged into.
 
@@ -46,7 +46,7 @@ You install both. They work together. Setup is about 5 minutes total.
 In Obsidian:
 
 1. **Settings → Community plugins → Browse**, search for **"BRAT"**, install + enable
-2. **Settings → BRAT → "Add Beta plugin"**, paste `Zbrooklyn/obsidian-mcp-web-agent`, click **Add Plugin**
+2. **Settings → BRAT → "Add Beta plugin"**, paste `Zbrooklyn/obsidian-mcp-web-agent-community-plugin`, click **Add Plugin**
 3. **Settings → Community plugins**, toggle **"MCP Web Agent"** ON
 
 A notice will pop up: _"patched N Obsidian shortcut(s). Active on next launch."_ The plugin just added a launch flag to your Obsidian shortcuts. Quit Obsidian and reopen it normally. Status bar (bottom-right) should show 🟢 **Bridge active**.
@@ -56,7 +56,7 @@ A notice will pop up: _"patched N Obsidian shortcut(s). Active on next launch."_
 In a terminal:
 
 ```bash
-npm install -g github:Zbrooklyn/obsidian-mcp-web-agent
+npm install -g github:Zbrooklyn/obsidian-mcp-web-agent-community-plugin
 ```
 
 > _The connector lives in the `/server/` subfolder of the same repo. The npm command pulls and installs from there automatically._
@@ -256,7 +256,7 @@ These complement each other. Routing pattern: this for personal logged-in stuff,
 
 ## Contributing
 
-Issues and PRs welcome at https://github.com/Zbrooklyn/obsidian-mcp-web-agent/issues.
+Issues and PRs welcome at https://github.com/Zbrooklyn/obsidian-mcp-web-agent-community-plugin/issues.
 
 For PRs: open an issue first to discuss. Match the existing code style (vanilla JS, no build step, idiomatic Obsidian Plugin API). Test on your own vault. Update the README and INSTALL.md if your change affects user-facing behavior.
 

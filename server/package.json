@@ -24,14 +24,14 @@
   ],
   "author": "Edward Shamosh",
   "license": "MIT",
-  "homepage": "https://github.com/Zbrooklyn/obsidian-mcp-web-agent",
+  "homepage": "https://github.com/Zbrooklyn/obsidian-mcp-web-agent-community-plugin",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zbrooklyn/obsidian-mcp-web-agent.git",
+    "url": "git+https://github.com/Zbrooklyn/obsidian-mcp-web-agent-community-plugin.git",
     "directory": "server"
   },
   "bugs": {
-    "url": "https://github.com/Zbrooklyn/obsidian-mcp-web-agent/issues"
+    "url": "https://github.com/Zbrooklyn/obsidian-mcp-web-agent-community-plugin/issues"
   },
   "files": [
     "index.js",
