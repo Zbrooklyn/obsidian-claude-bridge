@@ -21,24 +21,82 @@ This plugin's job is to make that one launch flag a one-toggle setting:
 
 The plugin itself is small (~600 lines of vanilla JS, no build step). Most of what it does is shortcut management; the actual driving happens via CDP from outside.
 
-## Install (BRAT — recommended)
+## Install (full setup)
 
-[BRAT](https://github.com/TfTHacker/obsidian42-brat) is the standard way to install Obsidian plugins that haven't been added to the official community store yet.
+Two pieces work together. **You install BOTH for it to work.** Total time ~5 min.
 
-1. **Install BRAT** — Settings → Community plugins → Browse → search "BRAT" → install + enable
-2. **Open BRAT settings** — Settings → BRAT → "Add Beta plugin"
-3. **Enter:** `Zbrooklyn/obsidian-claude-bridge`
-4. **Choose latest release** → Add Plugin
-5. **Enable** in Settings → Community plugins → Claude Browser Bridge → toggle on
-6. **The plugin auto-patches your shortcuts.** A notice will fire telling you it patched N shortcuts. The bridge becomes active the next time you launch Obsidian — no special action needed, just close and reopen normally when you're ready.
+### Prerequisites
+- Obsidian (desktop) v1.5.0+
+- Node.js v18+ (`node -v` to check) — install from https://nodejs.org
+- Git (`git --version` to check)
+- Claude Code OR Claude Desktop
 
-## Install (manual)
+### Part 1 — Obsidian plugin (via BRAT)
 
-If you don't want BRAT:
+[BRAT](https://github.com/TfTHacker/obsidian42-brat) is the standard installer for Obsidian plugins not yet in the official community store.
+
+1. In Obsidian: **Settings → Community plugins → Browse** → search "BRAT" → **Install + Enable**
+2. **Settings → BRAT → "Add Beta plugin"** → paste `Zbrooklyn/obsidian-claude-bridge` → **Add Plugin**
+3. **Settings → Community plugins** → toggle **"Claude Browser Bridge"** ON
+4. A notice fires: _"patched N Obsidian shortcut(s). Active on next launch."_
+5. **Quit and reopen Obsidian** normally. Status bar (bottom-right) should show 🟢 **Bridge active**.
+
+### Part 2 — MCP server (via npm)
+
+In a terminal (PowerShell on Windows, Terminal on Mac/Linux):
+
+```bash
+npm install -g github:Zbrooklyn/obsidian-bridge-mcp
+```
+
+### Part 3 — Wire into Claude
+
+**For Claude Code** (CLI):
+
+```bash
+claude mcp add obsidian-bridge -- obsidian-bridge-mcp
+```
+
+Restart Claude Code. The 25 `obsidian_*` tools appear.
+
+**For Claude Desktop** (GUI), edit your config file:
+
+| OS | Path |
+|---|---|
+| Mac | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
+
+Add this entry under `"mcpServers"`:
+
+```json
+{
+  "mcpServers": {
+    "obsidian-bridge": {
+      "command": "obsidian-bridge-mcp"
+    }
+  }
+}
+```
+
+Save, fully quit and reopen Claude Desktop.
+
+### Part 4 — Verify
+
+Ask Claude:
+
+> Use `obsidian_status` to check the bridge.
+
+You should see `reachable: true` and Chrome version. Done.
+
+> **Need a more detailed walkthrough?** See [INSTALL.md](INSTALL.md) for a step-by-step click-by-click guide including non-technical setup and troubleshooting.
+
+## Install (manual plugin only — if you skip BRAT)
 
 1. Download `main.js`, `manifest.json` from the [latest release](https://github.com/Zbrooklyn/obsidian-claude-bridge/releases)
 2. Put both into `<your-vault>/.obsidian/plugins/claude-browser-bridge/`
 3. Settings → Community plugins → reload → enable Claude Browser Bridge
+
+(You still need Parts 2-4 above for the MCP server.)
 
 ## Settings
 
